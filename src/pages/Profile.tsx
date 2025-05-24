@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { updateProfile, deleteUser } from 'firebase/auth';
 import '../styles/auth-styles.css';
 
+import OrderHistory from './pages';
+
 const Profile: React.FC = () => {
   const { user } = useAuth();
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -43,32 +45,40 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className='form-container'>
+  
+    <div className="Profile-Container">
       <h1>Profile</h1>
-      <form onSubmit={handleUpdateProfile}>
-        <input
-          type='text'
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          placeholder='Name'
-        />
-        <input
-          disabled={true}
-          type='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder='Email'
-        />
-        <button type='submit'>Update Profile</button>
-        {success && <p className='success'>{success}</p>}
-        {error && <p className='error'>{error}</p>}
-        <div>
-          <button onClick={handleDeleteAccount} className='deleteAccountButton'>
-            Delete Account
-          </button>
-        </div>
-      </form>
+      <div className="OH-container">
+      <OrderHistory/>
+      </div>
+      <div className='form-container'>
+        <h1>Profile</h1>
+        <form onSubmit={handleUpdateProfile}>
+          <input
+            type='text'
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            placeholder='Name'
+          />
+          <input
+            disabled={true}
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='Email'
+          />
+          <button type='submit'>Update Profile</button>
+          {success && <p className='success'>{success}</p>}
+          {error && <p className='error'>{error}</p>}
+          <div>
+            <button onClick={handleDeleteAccount} className='deleteAccountButton'>
+              Delete Account
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+
   );
 };
 export default Profile;

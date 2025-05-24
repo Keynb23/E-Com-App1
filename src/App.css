@@ -1,3 +1,42 @@
+/* order history page */
+
+.OH.parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.order-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* profile */
+
+.Profile-Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+
+}
+
+.OH-container {
+  display: fled;
+
+}
+
+
+
 /* hero */
 .hero-video-container {
   position: relative;

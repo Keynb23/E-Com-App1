@@ -25,30 +25,31 @@ const OrderHistory = () => {
   if (error) return <p>Error loading orders</p>;
 
   return (
-  
-    <div>
-      <h2>Order History</h2>
-      {orders.length === 0 ? (
-        <p>No orders found</p>
-      ) : (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>
-              <strong>Order ID:</strong> {order.id} <br />
-              <strong>Date:</strong>{" "}
-              {new Date(order.timestamp).toLocaleDateString()} <br />
-              <strong>Total Price:</strong> ${order.totalPrice.toFixed(2)}
-              <ul>
-                {order.products.map((product) => (
-                  <li key={product.id}>
-                    {product.name} - ${product.price}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="OH.parent">
+      <div className="order-history">
+        <h2>Order History</h2>
+        {orders.length === 0 ? (
+          <p>No orders found</p>
+        ) : (
+          <ul>
+            {orders.map((order) => (
+              <li key={order.id}>
+                <strong>Order ID:</strong> {order.id} <br />
+                <strong>Date:</strong>{" "}
+                {new Date(order.timestamp).toLocaleDateString()} <br />
+                <strong>Total Price:</strong> ${order.totalPrice.toFixed(2)}
+                <ul>
+                  {order.products.map((product) => (
+                    <li key={product.id}>
+                      {product.name} - ${product.price}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
