@@ -39,15 +39,6 @@ const Home: React.FC = () => {
   const filteredProducts = getFilteredProducts();
   return (
     <div>
-      <div className="hero-overlay">
-          FAKE STORE
-        </div>
-      <div className="hero-video-container">
-        <video autoPlay loop muted id="heroVideo">
-          <source src="https://www.shutterstock.com/shutterstock/videos/1038264401/preview/stock-footage-old-colorful-posters-ripped-torn-crumpled-paper-abstract-grunge-texture-wall-backdrop-placard.webm" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
 
       <div className='cat-controls'>
         <select

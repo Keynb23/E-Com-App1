@@ -19,7 +19,10 @@ const fetchOrders = async () => {
 };
 
 const OrderHistory = () => {
-  const { data: orders, isLoading, error } = useQuery(["orders"], fetchOrders);
+  const { data: orders, isLoading, error } = useQuery({
+    queryKey: ["orders"],
+    queryFn: fetchOrders,
+  });
 
   if (isLoading) return <p>Loading orders...</p>;
   if (error) return <p>Error loading orders</p>;
@@ -28,11 +31,11 @@ const OrderHistory = () => {
     <div className="OH.parent">
       <div className="order-history">
         <h2>Order History</h2>
-        {orders.length === 0 ? (
+        {orders && orders.length === 0 ? (
           <p>No orders found</p>
         ) : (
           <ul>
-            {orders.map((order) => (
+            {orders && orders.map((order) => (
               <li key={order.id}>
                 <strong>Order ID:</strong> {order.id} <br />
                 <strong>Date:</strong>{" "}

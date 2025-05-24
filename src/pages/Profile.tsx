@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { updateProfile, deleteUser } from 'firebase/auth';
 import '../styles/auth-styles.css';
 
-import OrderHistory from './pages';
+import OrderHistory from './OrderHIstory';
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
