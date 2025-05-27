@@ -112,7 +112,7 @@ const CRUD: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const productDocRef = doc(db, 'products', editingProduct.id);
+      const productDocRef = doc(productsCollectionRef, editingProduct.id);
       await updateDoc(productDocRef, {
         title: editingProduct.title,
         description: editingProduct.description,

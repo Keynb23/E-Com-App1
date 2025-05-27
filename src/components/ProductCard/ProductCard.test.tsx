@@ -1,5 +1,4 @@
 // components/ProductCard/ProductCard.test.tsx
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ProductCard from './ProductCard';
 import { AddToCart } from '../ui/button/CartButtons'; // Mock this if it causes issues, or ensure its dependencies are met

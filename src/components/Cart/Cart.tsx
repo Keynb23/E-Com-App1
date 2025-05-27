@@ -17,7 +17,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getFirestore, collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext'; 
-import { getAuth } from 'firebase/auth'; 
 
 
 const Cart: React.FC = () => {

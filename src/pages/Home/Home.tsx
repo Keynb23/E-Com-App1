@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { Category, Product } from '../../types/types'; 
+import type { Product } from '../../types/types'; 
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { useProductContext } from '../../context/ProductContext';
 import { useQuery } from '@tanstack/react-query';
