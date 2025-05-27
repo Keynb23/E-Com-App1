@@ -53,3 +53,132 @@
     margin-top: 2rem;
     color: #666;
 }
+
+    .order-history {
+  overflow-y: auto;
+}
+
+.order-history h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.order-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-history li {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #fafafa;
+  transition: box-shadow 0.3s ease;
+}
+
+.order-history li:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
+}
+
+.order-history strong {
+  color: #444;
+}
+
+.order-history li ul {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid #ddd;
+}
+
+.order-history li ul li {
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.order-history .loading,
+.order-history .error {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  color: #666;
+}
+/* Order History Media Queries */
+@media (max-width: 992px) {
+  .order-history h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .order-history li {
+    padding: 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .order-history li ul {
+    padding-left: 0.8rem;
+  }
+
+  .order-history li ul li {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-history h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .order-history li {
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .order-history li ul {
+    padding-left: 0.7rem;
+  }
+
+  .order-history li ul li {
+    font-size: 0.85rem;
+  }
+
+  .order-history .loading,
+  .order-history .error {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .order-history h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .order-history li {
+    padding: 0.7rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .order-history li ul {
+    padding-left: 0.6rem;
+  }
+
+  .order-history li ul li {
+    font-size: 0.8rem;
+  }
+
+  .order-history .loading,
+  .order-history .error {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+}

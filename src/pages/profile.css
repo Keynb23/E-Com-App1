@@ -143,10 +143,116 @@
     align-items: center;
     overflow-y: scroll;
 }
-
+/* Profile Page Media Queries */
 @media (min-width: 768px) {
-    .OH-container {
-        flex-grow: 1; /* Allows it to take up remaining horizontal space */
-        min-width: 0; /* Prevents overflow */
-    }
+  .Profile-Container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .OH-container {
+    flex-grow: 1;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .Profile-Container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 5rem;
+    grid-template-areas:
+      "order-history"
+      "profile-form";
+  }
+
+  .profile-form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    top: 0;
+    grid-area: profile-form;
+  }
+
+  .OH-container {
+    position: static;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto 0;
+    max-height: 500px;
+    grid-area: order-history;
+  }
+}
+
+@media (max-width: 768px) {
+  .Profile-Container {
+    padding: 15px;
+    margin-top: 5rem;
+  }
+
+  .Profile-Container h1 {
+    font-size: 2em;
+    margin-bottom: 15px;
+  }
+
+  .profile-form-container {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .profile-form-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .profile-form-container input {
+    padding: 10px;
+    font-size: 0.95em;
+  }
+
+  .profile-form-container button[type='submit'],
+  .profile-deleteAccountButton {
+    padding: 10px 15px;
+    font-size: 1em;
+  }
+
+  .OH-container {
+    padding: 0 10px;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .Profile-Container {
+    padding: 10px;
+    margin-top: 4.5rem;
+  }
+
+  .Profile-Container h1 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+  }
+
+  .profile-form-container {
+    padding: 15px;
+  }
+
+  .profile-form-container h1 {
+    font-size: 1.3em;
+  }
+
+  .profile-form-container input {
+    font-size: 0.9em;
+  }
+
+  .profile-form-container button[type='submit'],
+  .profile-deleteAccountButton {
+    font-size: 0.9em;
+  }
+
+  .profile-success,
+  .profile-error {
+    padding: 8px;
+    font-size: 0.9em;
+  }
 }
