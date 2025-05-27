@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../lib/firebase/firebase';
-import "../styles/auth-styles.css"
+import { auth } from '../lib/firebase/firebase'; 
+import { getFirestore, doc, setDoc, Timestamp } from 'firebase/firestore'; 
+import './register.css'
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -11,24 +12,38 @@ const Register = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+  const db = getFirestore();
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError(''); 
+
     try {
-      // Create user with email and password using firebase auth
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      // Update user profile with displayName after user is created
-      await updateProfile(userCredential.user, {
+      const user = userCredential.user; 
+
+      await updateProfile(user, {
         displayName: displayName,
       });
+
+
+      const userDocRef = doc(db, 'users', user.uid);
+      await setDoc(userDocRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: displayName,
+        createdAt: Timestamp.now(), 
+
+      });
+
       navigate('/profile');
     } catch (error: any) {
+      console.error("Error during registration:", error);
       setError(error.message);
     }
   };
@@ -45,18 +60,22 @@ const Register = () => {
             placeholder='Email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type='text'
             placeholder='Name'
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
+            required
           />
           <input
             type='password'
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6} 
           />
           <button type='submit'>Register</button>
         </fieldset>

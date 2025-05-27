@@ -1,4 +1,61 @@
-.parent-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+.Add-to button { 
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  margin: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.quantity button {
+  padding: 4px 8px 10px 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  height: 22px;
+  width: 40px;
+  border: none;
+  border-radius: 8px;
+  margin: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clear button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  margin: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Specific button styles */
+.Add-to button {
+  background-color: #007bff;
+  color: white;
+}
+
+.Add-to button:hover {
+  background-color: #0056b3;
+}
+
+.quantity button {
+  background-color: #28a745;
+  color: white;
+}
+
+.quantity button:hover {
+  background-color: #1e7e34;
+}
+
+.clear button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.clear button:hover {
+  background-color: #a71d2a;
+}

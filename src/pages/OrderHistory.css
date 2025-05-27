@@ -1,62 +1,55 @@
-/* OrderHistory.css */
-
 .order-history {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: auto;
 }
 
+
 .order-history h2 {
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-  color: #333;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
 }
 
 .order-history ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .order-history li {
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  background-color: #fafafa;
-  transition: box-shadow 0.3s ease;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background-color: #fafafa;
+    transition: box-shadow 0.3s ease;
 }
 
 .order-history li:hover {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
 }
 
 .order-history strong {
-  color: #444;
+    color: #444;
 }
 
 .order-history li ul {
-  margin-top: 0.5rem;
-  padding-left: 1rem;
-  border-left: 3px solid #ddd;
+    margin-top: 0.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid #ddd;
 }
 
 .order-history li ul li {
-  margin-bottom: 0.3rem;
-  font-size: 0.95rem;
-  color: #555;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+    color: #555;
 }
 
-.loading,
-.error {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-top: 2rem;
-  color: #666;
+.order-history .loading,
+.order-history .error {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    color: #666;
 }

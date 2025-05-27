@@ -1,0 +1,152 @@
+.Profile-Container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat (2, 1fr);
+    padding: 20px;
+    margin-top: 6rem;
+    gap: 40px;
+    max-width: 1200px;
+}
+
+@media (min-width: 768px) {
+    .Profile-Container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
+
+.Profile-Container h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.profile-form-container {
+    position: relative;
+    top: 5rem;
+    right: 0;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.profile-form-container h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.profile-form-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
+
+.profile-form-container input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-form-container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.profile-form-container button[type='submit'] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.profile-form-container button[type='submit']:hover {
+    background-color: #0056b3;
+}
+
+.profile-deleteAccountButton {
+    background-color: #971a26;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.profile-deleteAccountButton:hover {
+    background-color: #db1226;
+}
+
+.profile-success {
+    color: #28a745;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.OH-container {
+    position: absolute;
+    top: 5rem;
+    left: 0;
+    width: 600px;
+    height: 100%;
+    max-height: 800px;;
+    display: flex;
+    gap: 25px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+@media (min-width: 768px) {
+    .OH-container {
+        flex-grow: 1; /* Allows it to take up remaining horizontal space */
+        min-width: 0; /* Prevents overflow */
+    }
+}

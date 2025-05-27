@@ -6,12 +6,13 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Home from './pages/Home/Home';
 import Profile from './pages/Profile';
-import Cart from './store/Cart/Cart';
+import Cart from './components/Cart/Cart';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Navbar from './components/Navbar/Navbar';
 import './App.css';
+import CRUD from './pages/crud/crud';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/profile' element={<Profile />} />
+                <Route path='/crud' element={<CRUD />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../lib/firebase/firebase';
-import "../styles/auth-styles.css"
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './register.css'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -55,7 +55,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type='submit'>Login</button>
+          <button className="login-button" type='submit'>Login</button>
         </fieldset>
       </form>
     </div>

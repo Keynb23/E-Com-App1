@@ -1,7 +1,8 @@
+// ProductCard.tsx
 import { useState } from 'react';
 import type { Product } from '../../types/types';
 import { Rating } from '@smastrom/react-rating';
-import Button from '../ui/Button';
+import { AddToCart } from '../ui/button/CartButtons'; 
 import './ProductCard.css';
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
@@ -9,18 +10,20 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
   return (
     <div className="product-card" onClick={() => setShowDescription(prev => !prev)}>
-      <h3>{product.brand}</h3>
+      <h3>{product.title.length > 15 ? product.title.slice(0, 15) + '...' : product.title}</h3>
+      <h2>{product.category}</h2>
       <p>${product.price}</p>
       <Rating style={{ maxWidth: 150 }} value={product.rating.rate} readOnly />
       <img src={product.image} alt={product.title} className="product-image" />
-      
-      {showDescription && (
-        <p className="product-description">{product.description}</p>
-      )}
-      
+
       <div className="add-to-cart">
-        <Button product={product} />
+        <AddToCart product={product} />
       </div>
+
+      {showDescription && (
+        <p className="product-description">{product.description.length > 150 ? product.description.slice(0, 150) + '...' : product.description}</p>
+      )}
+
     </div>
   );
 };

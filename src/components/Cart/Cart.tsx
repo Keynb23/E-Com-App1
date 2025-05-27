@@ -1,48 +1,41 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCartItems, selectTotalItems, selectTotalPrice, removeItemFromCart, incrementQuantity, decrementQuantity, clearCart, type CartItem } from '../cartSlice';
-import type { AppDispatch } from '../store';
+import {
+  selectCartItems,
+  selectTotalItems,
+  selectTotalPrice,
+  removeItemFromCart,
+  clearCart, 
+} from '../../store/cartSlice';
+import type { CartItem } from '../../types/types';
+import type { AppDispatch } from '../../store/store';
 import '../Cart/Cart.css';
 import type { Product } from '../../types/types';
 import { Rating } from '@smastrom/react-rating';
-import Button from '../../components/ui/Button';
+import { AddToCart, IncrementButton, ClearCart } from '../ui/button/CartButtons';
 import { useQuery } from '@tanstack/react-query';
+
+import { getFirestore, collection, addDoc, Timestamp } from 'firebase/firestore';
+import { useAuth } from '../../context/AuthContext'; 
+import { getAuth } from 'firebase/auth'; 
+
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  // 🛒 Select cart data from Redux store
   const cartItems = useSelector(selectCartItems) as CartItem[];
   const totalItems = useSelector(selectTotalItems) as number;
   const totalPrice = useSelector(selectTotalPrice) as number;
 
-  // ✅ State to show checkout success message
   const [checkoutMessage, setCheckoutMessage] = useState<string>('');
+  const [checkoutError, setCheckoutError] = useState<string>('');
 
-  // ❌ Remove item from cart
+  const { user } = useAuth(); 
+
   const handleRemoveItem = (productId: number) => {
     dispatch(removeItemFromCart(productId));
   };
 
-  // ➕ Increment item quantity
-  const handleIncrement = (productId: number) => {
-    dispatch(incrementQuantity(productId));
-  };
-
-  // ➖ Decrement item quantity
-  const handleDecrement = (productId: number) => {
-    dispatch(decrementQuantity(productId));
-  };
-
-  // 💳 Checkout and clear the cart
-  const handleCheckout = () => {
-    dispatch(clearCart());
-    setCheckoutMessage('Checkout successful! Your order has been placed and your cart has been cleared.');
-    setTimeout(() => setCheckoutMessage(''), 5000);
-  };
-
-  // 📊 Find the most common category in the cart
-  function getMostFrequentCategory(cartItems: Product[]): string | null {
+  function getMostFrequentCategory(cartItems: CartItem[]): string | null {
     const counts: Record<string, number> = {};
 
     for (const item of cartItems) {
@@ -53,7 +46,6 @@ const Cart: React.FC = () => {
     return sorted.length > 0 ? sorted[0][0] : null;
   }
 
-  // 🔍 Fetch recommended products based on category
   function useRecommendedProducts(category: string | null) {
     return useQuery({
       queryKey: ['recommended', category],
@@ -65,11 +57,56 @@ const Cart: React.FC = () => {
         const data = await res.json();
         return data as Product[];
       },
-      enabled: !!category, // Only fetch when category is not null
+      enabled: !!category,
     });
   }
 
-  // ✅ Show success message after checkout
+  const mostFrequentCategory = getMostFrequentCategory(cartItems);
+  const { data: recommended, isLoading } = useRecommendedProducts(mostFrequentCategory);
+
+  const handleCheckout = async () => {
+    if (!user) {
+      setCheckoutError('You must be logged in to complete a purchase.');
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      setCheckoutError('Your cart is empty. Please add items before checking out.');
+      return;
+    }
+
+    setCheckoutError(''); 
+    setCheckoutMessage('');
+
+    try {
+      const db = getFirestore();
+      const ordersCollectionRef = collection(db, 'orders');
+
+
+      const orderData = {
+        userId: user.uid,
+        products: cartItems.map(item => ({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image, 
+          category: item.category, 
+        })),
+        totalPrice: totalPrice,
+        timestamp: Timestamp.now(),
+      };
+
+      await addDoc(ordersCollectionRef, orderData);
+
+      dispatch(clearCart());
+      setCheckoutMessage('Thank you for your purchase!');
+    } catch (error: any) {
+      console.error('Error during checkout:', error);
+      setCheckoutError('Checkout failed. Please try again. ' + error.message);
+    }
+  };
+
   if (checkoutMessage) {
     return (
       <div className="cart-container">
@@ -79,24 +116,19 @@ const Cart: React.FC = () => {
     );
   }
 
-  // 📭 Show empty cart message
   if (cartItems.length === 0) {
     return (
       <div className="cart-container">
         <h2>Shopping Cart</h2>
-        <p>Your cart is currently empty.</p>
+        <p className="cart-empty-message">Your cart is currently empty.</p>
       </div>
     );
   }
-
-  const mostFrequentCategory = getMostFrequentCategory(cartItems);
-  const { data: recommended, isLoading } = useRecommendedProducts(mostFrequentCategory);
 
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
 
-      {/* 🧾 Cart Items */}
       <div className="cart-items-list">
         {cartItems.map((item: CartItem) => (
           <div key={item.id} className="cart-item">
@@ -105,46 +137,50 @@ const Cart: React.FC = () => {
               <h3>{item.title}</h3>
               <p>Price: ${item.price.toFixed(2)}</p>
 
-              {/* ➕➖ Quantity Controls */}
-              <div className="cart-item-quantity">
-                <button onClick={() => handleDecrement(item.id)} disabled={item.quantity <= 1}>-</button>
-                <span>{item.quantity}</span>
-                <button onClick={() => handleIncrement(item.id)}>+</button>
-              </div>
-
+              <IncrementButton
+                product={{
+                  id: item.id,
+                  title: item.title,
+                  price: item.price,
+                  image: item.image,
+                  brand: (item as any).brand ?? '',
+                  description: (item as any).description ?? '',
+                  category: item.category,
+                  rating: (item as any).rating ?? { rate: 0, count: 0 },
+                }}
+              />
               <p>Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
             </div>
-
             <button onClick={() => handleRemoveItem(item.id)} className="cart-item-remove-button">
               Remove
             </button>
           </div>
         ))}
       </div>
-
-      {/* 📦 Order Summary */}
       <div className="cart-summary">
         <h3>Order Summary</h3>
         <p>Total Items: {totalItems}</p>
         <p>Total Price: ${totalPrice.toFixed(2)}</p>
-        <button onClick={handleCheckout} className="checkout-button" disabled={cartItems.length === 0}>
-          Proceed to Checkout
+        <ClearCart />
+        {checkoutError && <p className="error-message">{checkoutError}</p>} 
+        <button onClick={handleCheckout} className="checkout-button" disabled={cartItems.length === 0 || !user}>
+          Checkout
         </button>
 
-        {/* 🌟 Recommended Products */}
         <div className="below-checkout">
           <div className="mightlike">
-          <p>You might also like:</p></div>
+            <p>You might also like:</p>
+          </div>
           <div className="recommended-products">
             {isLoading && <p>Loading recommendations...</p>}
             {!isLoading && recommended?.slice(0, 1).map(product => (
               <div key={product.id} className="cart-product-card">
-                <h3>{product.brand}</h3>
+                <h3>{product.title}</h3>
                 <h5>{product.category}</h5>
-                <p>${product.price}</p>
+                <p>${product.price.toFixed(2)}</p>
                 <Rating style={{ maxWidth: 150 }} value={product.rating.rate} readOnly />
-                <img src={product.image} alt={product.brand} className="cart-product-image" />
-                <Button product={product} />
+                <img src={product.image} alt={product.title} className="cart-product-image" /> 
+                <AddToCart product={product} />
               </div>
             ))}
           </div>

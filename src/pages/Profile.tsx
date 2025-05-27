@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { updateProfile, deleteUser } from 'firebase/auth';
-import '../styles/auth-styles.css';
+import './profile.css'
 import OrderHistory from './OrderHIstory';
 
 const Profile: React.FC = () => {
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
       <div className="OH-container">
       <OrderHistory/>
       </div>
-      <div className='form-container'>
+      <div className='profile-form-container'>
         <h1>Profile</h1>
         <form onSubmit={handleUpdateProfile}>
           <input
@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
           {success && <p className='success'>{success}</p>}
           {error && <p className='error'>{error}</p>}
           <div>
-            <button onClick={handleDeleteAccount} className='deleteAccountButton'>
+            <button onClick={handleDeleteAccount} className='profile-deleteAccountButton'>
               Delete Account
             </button>
           </div>

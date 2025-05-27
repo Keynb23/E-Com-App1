@@ -57,6 +57,9 @@ const Navbar: React.FC = () => {
           <Link to="/logout" className="link">
             Logout
           </Link>
+          <Link to="/crud" className="link">
+            Add Product
+          </Link>
         </>
       ) : (
         <>
