@@ -1,11 +1,10 @@
-// types/types.ts
 export interface Product {
-  id: string; // THIS MUST BE STRING
+  id: string;
   title: string;
   price: number;
   brand: string;
   description: string;
-  category: string; // This was missing in your old CartItem, now it's explicit
+  category: string;
   image: string;
   rating: {
     rate: number;
@@ -13,9 +12,9 @@ export interface Product {
   }
 }
 
-// CartItem extends Product, so it automatically gets 'id: string', 'category: string', etc.
-export interface CartItem extends Product {
+export interface CartItem {
   quantity: number;
+  category: string;
 }
 
 export type Category = string;
