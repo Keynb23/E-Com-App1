@@ -1,17 +1,10 @@
+
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './store';
 
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-}
 
-export interface CartItem extends Product {
-  quantity: number;
-}
+import type { Product, CartItem } from '../types/types';
 
 interface CartState {
   items: CartItem[];
@@ -25,7 +18,8 @@ const loadInitialState = (): CartState => {
     }
     const items = JSON.parse(serializedState);
     if (Array.isArray(items)) {
-      return { items };
+
+      return { items: items.map((item: any) => ({ ...item, id: String(item.id) })) };
     }
     console.warn('Cart data in session storage was not an array, resetting cart.');
     return { items: [] };
@@ -41,25 +35,29 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+
     addItemToCart: (state, action: PayloadAction<Product & { quantity?: number }>) => {
-      const newItem = { ...action.payload, quantity: action.payload.quantity ?? 1 };
-      const existingItem = state.items.find(item => item.id === newItem.id);
+      const newItemId = String(action.payload.id);
+      const newItem = { ...action.payload, id: newItemId, quantity: action.payload.quantity ?? 1 };
+
+      const existingItem = state.items.find(item => item.id === newItemId); 
       if (existingItem) {
         existingItem.quantity += newItem.quantity;
       } else {
-        state.items.push(newItem);
+
+        state.items.push(newItem as CartItem); 
       }
     },
-    removeItemFromCart: (state, action: PayloadAction<number>) => {
+    removeItemFromCart: (state, action: PayloadAction<string>) => { 
       state.items = state.items.filter(item => item.id !== action.payload);
     },
-    incrementQuantity: (state, action: PayloadAction<number>) => {
+    incrementQuantity: (state, action: PayloadAction<string>) => { 
       const item = state.items.find(item => item.id === action.payload);
       if (item) {
         item.quantity += 1;
       }
     },
-    decrementQuantity: (state, action: PayloadAction<number>) => {
+    decrementQuantity: (state, action: PayloadAction<string>) => { 
       const item = state.items.find(item => item.id === action.payload);
       if (item) {
         item.quantity -= 1;
