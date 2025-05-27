@@ -31,7 +31,7 @@ const Cart: React.FC = () => {
   const { user } = useAuth(); 
 
   const handleRemoveItem = (productId: number) => {
-    dispatch(removeItemFromCart(productId));
+    dispatch(removeItemFromCart(productId.toString()));
   };
 
   function getMostFrequentCategory(cartItems: CartItem[]): string | null {
@@ -150,7 +150,7 @@ const Cart: React.FC = () => {
               />
               <p>Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
             </div>
-            <button onClick={() => handleRemoveItem(item.id)} className="cart-item-remove-button">
+            <button onClick={() => handleRemoveItem(Number(item.id))} className="cart-item-remove-button">
               Remove
             </button>
           </div>
