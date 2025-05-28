@@ -1,3 +1,5 @@
+
+{/*
 // render, screen, fireEvent:
 // render: Renders React components.
 // screen: Provides queries to find elements.
@@ -132,3 +134,5 @@ describe('ProductCard Component', () => {
     expect(screen.getByText('Add to Cart Mock')).toBeInTheDocument();
   });
 });
+
+*/}

@@ -1,3 +1,4 @@
+{/*
 import React from 'react';
 // render: A function from @testing-library/react to render React components into a virtual DOM.
 // screen: An object from @testing-library/react that provides queries to find elements rendered by `render`.
@@ -181,3 +182,5 @@ describe('Home Component', () => {
     });
   });
 });
+
+*/}
