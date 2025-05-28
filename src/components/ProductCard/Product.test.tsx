@@ -1,4 +1,3 @@
-import React from 'react';
 // render, screen, fireEvent:
 // render: Renders React components.
 // screen: Provides queries to find elements.
@@ -11,9 +10,13 @@ import { configureStore } from '@reduxjs/toolkit';
 // ProductCard: The component being tested.
 import ProductCard from './ProductCard';
 // Product: Type definition for product data.
-import { Product } from '../../types/types';
+// Product: Type definition for product data.
+import type { Product } from '../../types/types';
 // cartReducer: The Redux reducer for the cart slice.
 import cartReducer from '../../store/cartSlice';
+import type { ReactNode } from 'react'; 
+
+
 
 // --- Mocking External Dependencies ---
 
@@ -32,8 +35,8 @@ vi.mock('../ui/button/CartButtons', () => ({
   // AddToCart: This mock renders a simple `<button>` element with a `data-testid`
   // and a click handler (`onClick={() => vi.fn()}`) that does nothing,
   // ensuring the button is rendered and clickable without affecting the actual cart logic (which is tested elsewhere).
-  AddToCart: vi.fn(({ product, children }: any) => (
-    <button data-testid="add-to-cart-button" onClick={() => vi.fn()}>{children || 'Add to Cart Mock'}</button>
+  AddToCart: vi.fn(({ children }: { children?: ReactNode }) => (
+    <button data-testid="add-to-cart-button" onClick={() => { }}>{children || 'Add to Cart Mock'}</button>
   )),
 }));
 

@@ -14,7 +14,8 @@ import Home from './Home';
 // getFirestore, collection, getDocs: Functions from Firebase Firestore for database interaction.
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 // Product: A type definition for your product data structure.
-import { Product } from '../../types/types';
+// Product: A type definition for your product data structure.
+import type { Product } from '../../types/types';
 
 // --- Mocking External Dependencies ---
 
