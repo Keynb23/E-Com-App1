@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import type { Product } from '../../types/types'; 
 import './crud.css';
 
+// CRUD
 const CRUD: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id' | 'rating'>>({
@@ -24,15 +25,16 @@ const CRUD: React.FC = () => {
   const auth = getAuth();
   const productsCollectionRef = collection(db, 'products');
 
-
+  // useEffect for auth state change
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
     return () => unsubscribe(); 
   }, [auth]);
+  // This effect listens for changes in the user's authentication state (login/logout) and updates the `currentUser` state accordingly.
 
-
+  // fetchProducts
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
@@ -53,12 +55,15 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
+  // This asynchronous function fetches all product documents from the 'products' collection in Firestore, updates the `products` state with the retrieved data, and manages loading and error states.
 
+  // useEffect for initial product fetch
   useEffect(() => {
     fetchProducts();
   }, []); 
+  // This effect calls `fetchProducts` once when the component mounts to load the initial list of products.
 
-
+  // handleAddProduct
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser) {
@@ -88,12 +93,15 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
+  // This function handles the submission of the "Add New Product" form. It validates the input, checks for user authentication, adds a new product document to Firestore, resets the form, and then refetches the product list.
 
-
+  // handleEditProduct
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
   };
+  // This function sets the `editingProduct` state with the selected product, populating the edit form.
 
+  // handleUpdateProduct
   const handleUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser) {
@@ -130,8 +138,9 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
+  // This function handles the submission of the "Edit Product" form. It validates the input, checks for user authentication, updates the existing product document in Firestore, clears the editing state, and then refetches the product list.
 
-
+  // handleDeleteProduct
   const handleDeleteProduct = async (productId: string) => {
     if (!currentUser) {
       setError("You must be logged in to delete products.");
@@ -154,12 +163,14 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
+  // This asynchronous function handles the deletion of a product. It confirms the deletion with the user, checks for authentication, deletes the product document from Firestore, and then refetches the updated product list.
 
-
+  // handleCancelEdit
   const handleCancelEdit = () => {
     setEditingProduct(null);
     setError(null); 
   };
+  // This function clears the `editingProduct` state, effectively canceling the product editing process and clearing any related errors.
 
   return (
     <div className="crud-container">

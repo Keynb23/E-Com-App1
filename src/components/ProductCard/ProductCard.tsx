@@ -1,10 +1,10 @@
-// ProductCard.tsx
 import { useState } from 'react';
 import type { Product } from '../../types/types';
 import { Rating } from '@smastrom/react-rating';
-import { AddToCart } from '../ui/button/CartButtons'; 
+import { AddToCart } from '../ui/button/CartButtons';
 import './ProductCard.css';
 
+// ProductCard
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [showDescription, setShowDescription] = useState(false);
 
@@ -27,5 +27,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     </div>
   );
 };
+// This component displays a single product with its title, category, price, rating, and image. 
+// It also includes an "Add to Cart" button. When clicked, it toggles the visibility of the product's description.
 
 export default ProductCard;

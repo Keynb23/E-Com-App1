@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
-import type { Product } from '../../types/types'; 
+import type { Product } from '../../types/types';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { useProductContext } from '../../context/ProductContext';
 import { useQuery } from '@tanstack/react-query';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import React from 'react';
 
-// --- Firestore Data Fetching Functions ---
-
+// fetchProductsFromFirestore
 const fetchProductsFromFirestore = async (): Promise<Product[]> => {
   const db = getFirestore();
   const productsRef = collection(db, 'products');
@@ -16,13 +15,13 @@ const fetchProductsFromFirestore = async (): Promise<Product[]> => {
   return querySnapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
-
     rating: doc.data().rating || { rate: 0, count: 0 },
     price: parseFloat(doc.data().price) || 0,
-  })) as unknown as Product[]; 
+  })) as unknown as Product[];
 };
+// This asynchronous function fetches all product documents from the 'products' collection in Firestore. It maps each document to a `Product` type, ensuring that `id`, `rating`, and `price` fields are correctly formatted.
 
-
+// fetchCategoriesFromFirestore
 const fetchCategoriesFromFirestore = async (): Promise<string[]> => {
   const db = getFirestore();
   const productsRef = collection(db, 'products');
@@ -37,9 +36,9 @@ const fetchCategoriesFromFirestore = async (): Promise<string[]> => {
   });
   return Array.from(allCategories);
 };
+// This asynchronous function retrieves all unique product categories from the 'products' collection in Firestore. It iterates through each product document, extracts the category, and adds it to a Set to ensure uniqueness, then returns an array of these unique categories.
 
-// --- Home Component ---
-
+// Home Component
 const Home: React.FC = () => {
   const { products, dispatch, selectedCategory } = useProductContext();
 
@@ -69,8 +68,9 @@ const Home: React.FC = () => {
       dispatch({ type: 'SET_PRODUCTS', payload: productsData });
     }
   }, [productsData, dispatch]);
+  // This effect hook updates the product context with fetched product data whenever `productsData` changes, ensuring the global state is synchronized with the Firestore data.
 
-  // Filter products based on selected category
+  // getFilteredProducts
   const getFilteredProducts = () => {
     if (selectedCategory) {
       const filteredByCategory = products.filter(
@@ -80,6 +80,7 @@ const Home: React.FC = () => {
     }
     return products;
   };
+  // This function filters the list of products based on the `selectedCategory` from the product context. If a category is selected, it returns only products belonging to that category; otherwise, it returns all products.
 
   const filteredProducts = getFilteredProducts();
 

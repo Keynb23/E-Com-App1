@@ -5,7 +5,7 @@ import {
   selectTotalItems,
   selectTotalPrice,
   removeItemFromCart,
-  clearCart, 
+  clearCart,
 } from '../../store/cartSlice';
 import type { CartItem } from '../../types/types';
 import type { AppDispatch } from '../../store/store';
@@ -16,9 +16,10 @@ import { AddToCart, IncrementButton, ClearCart } from '../ui/button/CartButtons'
 import { useQuery } from '@tanstack/react-query';
 
 import { getFirestore, collection, addDoc, Timestamp } from 'firebase/firestore';
-import { useAuth } from '../../context/AuthContext'; 
+import { useAuth } from '../../context/AuthContext';
 
 
+// Cart
 const Cart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector(selectCartItems) as CartItem[];
@@ -28,12 +29,15 @@ const Cart: React.FC = () => {
   const [checkoutMessage, setCheckoutMessage] = useState<string>('');
   const [checkoutError, setCheckoutError] = useState<string>('');
 
-  const { user } = useAuth(); 
+  const { user } = useAuth();
 
+  // handleRemoveItem
   const handleRemoveItem = (productId: number) => {
     dispatch(removeItemFromCart(productId.toString()));
   };
+  // This function dispatches the `removeItemFromCart` action to remove a specific item from the Redux cart state.
 
+  // getMostFrequentCategory
   function getMostFrequentCategory(cartItems: CartItem[]): string | null {
     const counts: Record<string, number> = {};
 
@@ -44,7 +48,9 @@ const Cart: React.FC = () => {
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
     return sorted.length > 0 ? sorted[0][0] : null;
   }
+  // This helper function iterates through the `cartItems` to determine and return the category that appears most frequently in the cart.
 
+  // useRecommendedProducts
   function useRecommendedProducts(category: string | null) {
     return useQuery({
       queryKey: ['recommended', category],
@@ -59,10 +65,13 @@ const Cart: React.FC = () => {
       enabled: !!category,
     });
   }
+  // This custom hook uses `@tanstack/react-query` to fetch a single recommended product based on the most frequent category in the user's cart. 
+  // The fetch only occurs if a valid category is provided.
 
   const mostFrequentCategory = getMostFrequentCategory(cartItems);
   const { data: recommended, isLoading } = useRecommendedProducts(mostFrequentCategory);
 
+  // handleCheckout
   const handleCheckout = async () => {
     if (!user) {
       setCheckoutError('You must be logged in to complete a purchase.');
@@ -74,7 +83,7 @@ const Cart: React.FC = () => {
       return;
     }
 
-    setCheckoutError(''); 
+    setCheckoutError('');
     setCheckoutMessage('');
 
     try {
@@ -89,8 +98,8 @@ const Cart: React.FC = () => {
           title: item.title,
           price: item.price,
           quantity: item.quantity,
-          image: item.image, 
-          category: item.category, 
+          image: item.image,
+          category: item.category,
         })),
         totalPrice: totalPrice,
         timestamp: Timestamp.now(),
@@ -105,6 +114,9 @@ const Cart: React.FC = () => {
       setCheckoutError('Checkout failed. Please try again. ' + error.message);
     }
   };
+  // This asynchronous function handles the checkout process. It first checks if the user is logged in and if the cart is not empty. 
+  // If valid, it records the order details (including user ID, products, total price, and timestamp) in a 'orders' collection in Firestore, 
+  // then clears the cart and displays a success message. It also handles any errors during the checkout process.
 
   if (checkoutMessage) {
     return (
@@ -161,7 +173,7 @@ const Cart: React.FC = () => {
         <p>Total Items: {totalItems}</p>
         <p>Total Price: ${totalPrice.toFixed(2)}</p>
         <ClearCart />
-        {checkoutError && <p className="error-message">{checkoutError}</p>} 
+        {checkoutError && <p className="error-message">{checkoutError}</p>}
         <button onClick={handleCheckout} className="checkout-button" disabled={cartItems.length === 0 || !user}>
           Checkout
         </button>
@@ -178,7 +190,7 @@ const Cart: React.FC = () => {
                 <h5>{product.category}</h5>
                 <p>${product.price.toFixed(2)}</p>
                 <Rating style={{ maxWidth: 150 }} value={product.rating.rate} readOnly />
-                <img src={product.image} alt={product.title} className="cart-product-image" /> 
+                <img src={product.image} alt={product.title} className="cart-product-image" />
                 <AddToCart product={product} />
               </div>
             ))}

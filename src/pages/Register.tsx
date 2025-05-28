@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../lib/firebase/firebase'; 
-import { getFirestore, doc, setDoc, Timestamp } from 'firebase/firestore'; 
+import { auth } from '../lib/firebase/firebase';
+import { getFirestore, doc, setDoc, Timestamp } from 'firebase/firestore';
 import './register.css'
 import { useNavigate } from 'react-router-dom';
 
+// Register
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,9 +15,10 @@ const Register = () => {
   const navigate = useNavigate();
   const db = getFirestore();
 
+  // handleSubmit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(''); 
+    setError('');
 
     try {
 
@@ -25,7 +27,7 @@ const Register = () => {
         email,
         password
       );
-      const user = userCredential.user; 
+      const user = userCredential.user;
 
       await updateProfile(user, {
         displayName: displayName,
@@ -37,7 +39,7 @@ const Register = () => {
         uid: user.uid,
         email: user.email,
         displayName: displayName,
-        createdAt: Timestamp.now(), 
+        createdAt: Timestamp.now(),
 
       });
 
@@ -47,6 +49,9 @@ const Register = () => {
       setError(error.message);
     }
   };
+  // This function handles the registration form submission. It attempts to create a new user with Firebase Authentication using the provided email and password. 
+  // Upon successful creation, it updates the user's profile with a display name, saves user details to Firestore, and then redirects the user to the '/profile' page. 
+  // Any errors during the process are caught and displayed.
 
   return (
     <div className='form-container'>
@@ -75,7 +80,7 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            minLength={6} 
+            minLength={6}
           />
           <button type='submit'>Register</button>
         </fieldset>

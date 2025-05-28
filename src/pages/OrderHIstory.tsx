@@ -5,6 +5,7 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import { useState, useEffect } from 'react'; 
 import './OrderHistory.css';
 
+// fetchOrders
 const fetchOrders = async (userId: string) => { 
   const db = getFirestore();
   const ordersRef = collection(db, 'orders');
@@ -17,10 +18,13 @@ const fetchOrders = async (userId: string) => {
     timestamp: doc.data().timestamp ? doc.data().timestamp.toDate() : null,
   }));
 };
+// This asynchronous function fetches order data from Firestore for a specific user ID. It queries the 'orders' collection and returns an array of order objects, converting the Firestore timestamp to a JavaScript Date object.
 
+// OrderHistory
 const OrderHistory = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  // useEffect for auth state change
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -28,6 +32,7 @@ const OrderHistory = () => {
     });
     return () => unsubscribe();
   }, []);
+  // This effect listens for changes in the user's authentication state (login/logout) and updates the `currentUser` state accordingly.
 
   const { data: orders, isLoading, error, refetch } = useQuery({
     queryKey: ['orders', currentUser?.uid], 
@@ -36,12 +41,13 @@ const OrderHistory = () => {
     staleTime: 5 * 60 * 1000, // refreshes every 5 minutes
   });
 
+  // useEffect to refetch orders on user change
   useEffect(() => {
     if (currentUser) {
       refetch();
     }
   }, [currentUser, refetch]);
-
+  // This effect triggers a refetch of orders whenever the `currentUser` changes, ensuring that the order history is updated for the currently logged-in user.
 
   if (isLoading) return <p>Loading orders...</p>;
   if (error) {

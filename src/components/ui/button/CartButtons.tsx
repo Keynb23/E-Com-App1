@@ -8,12 +8,15 @@ type Props = {
   product: Product;
 };
 
+// AddToCart
 const AddToCart: React.FC<Props> = ({ product }) => {
   const dispatch = useDispatch();
 
+  // handleAddToCart
   const handleAddToCart = () => {
     dispatch(addItemToCart(product));
   };
+  // This function dispatches the `addItemToCart` action to add the given product to the Redux cart state.
 
   return (
     <div className="Add-to">
@@ -22,16 +25,22 @@ const AddToCart: React.FC<Props> = ({ product }) => {
   );
 };
 
+// IncrementButton
 const IncrementButton: React.FC<Props> = ({ product }) => {
   const dispatch = useDispatch();
 
+  // handleIncrement
   const handleIncrement = () => {
     dispatch(incrementQuantity(product.id));
   };
+  // This function dispatches the `incrementQuantity` action to increase the quantity of the specified product in the Redux cart state.
 
+  // handleDecrement
   const handleDecrement = () => {
     dispatch(decrementQuantity(product.id));
   };
+  // This function dispatches the `decrementQuantity` action to decrease the quantity of the specified product in the Redux cart state.
+  // If the quantity drops to zero or below, the item is removed.
 
   return (
     <div className="quantity">
@@ -41,12 +50,15 @@ const IncrementButton: React.FC<Props> = ({ product }) => {
   );
 };
 
-const ClearCart: React.FC = () => { 
+// ClearCart
+const ClearCart: React.FC = () => {
   const dispatch = useDispatch();
 
+  // handleClearCart
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+  // This function dispatches the `clearCart` action to remove all items from the Redux cart state.
 
   return (
     <div className="clear">
@@ -55,6 +67,7 @@ const ClearCart: React.FC = () => {
   );
 };
 
+// CartButtons
 const CartButtons: React.FC<Props> = ({ product }) => {
   return (
     <>
@@ -64,6 +77,8 @@ const CartButtons: React.FC<Props> = ({ product }) => {
     </>
   );
 };
+// This component is a composite that renders all three individual cart action buttons: AddToCart, IncrementButton, and ClearCart.
+// It's designed to provide a complete set of cart interaction controls in one place.
 
 export default CartButtons;
 export { AddToCart, ClearCart, IncrementButton };

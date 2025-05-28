@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { useState, useEffect } from "react";
 
+// Navbar
 const Navbar: React.FC = () => {
   const { user } = useAuth();
 
@@ -10,9 +11,10 @@ const Navbar: React.FC = () => {
   const [menu_class, setMenuClass] = useState("menu hidden");
   const [isMenuClicked, setIsMenuClicked] = useState(false);
 
-  // --- NEW STATE & EFFECT FOR CONDITIONAL RENDERING ---
+  // isMobile state and effect for conditional rendering
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 450);
 
+  // useEffect for handling window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 450);
@@ -24,11 +26,10 @@ const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); 
-  // --- END NEW STATE & EFFECT ---
+  }, []);
+  // This effect hook sets up an event listener for window resizing. It updates the `isMobile` state whenever the window's width crosses the 450px threshold, allowing for dynamic rendering of mobile vs. desktop navigation. The listener is cleaned up when the component unmounts.
 
-
-  // Toggle burger menu change (only called when burger menu related actions happen)
+  // updateMenu
   const updateMenu = () => {
     if (!isMenuClicked) {
       setBurgerClass("burger-bar clicked");
@@ -39,8 +40,9 @@ const Navbar: React.FC = () => {
     }
     setIsMenuClicked(!isMenuClicked);
   };
+  // This function toggles the visual state of the burger menu icon and the visibility of the mobile navigation menu. It updates CSS classes to reflect whether the menu is "clicked" (open) or "unclicked" (closed).
 
-  // Function to render navigation links FOR DESKTOP (no updateMenu call)
+  // renderDesktopNavLinks
   const renderDesktopNavLinks = () => (
     <>
       <Link to="/" className="link">
@@ -73,8 +75,9 @@ const Navbar: React.FC = () => {
       )}
     </>
   );
+  // This function renders the navigation links optimized for desktop displays. It conditionally shows "Profile", "Logout", and "Add Product" links if a user is logged in, or "Register" and "Login" links if no user is authenticated. It does not include logic to close a mobile menu upon clicking.
 
-  // Function to render navigation links FOR MOBILE (with updateMenu call to close the menu)
+  // renderMobileNavLinks
   const renderMobileNavLinks = () => (
     <>
       <Link to="/" className="link" onClick={updateMenu}>
@@ -91,6 +94,9 @@ const Navbar: React.FC = () => {
           <Link to="/logout" className="link" onClick={updateMenu}>
             Logout
           </Link>
+          <Link to="/crud" className="link" onClick={updateMenu}>
+            Add Product
+          </Link>
         </>
       ) : (
         <>
@@ -104,10 +110,11 @@ const Navbar: React.FC = () => {
       )}
     </>
   );
+  // This function renders the navigation links specifically for mobile displays. Similar to desktop links, it conditionally renders based on user authentication. Crucially, each link includes an `onClick={updateMenu}` handler to automatically close the mobile menu when a navigation link is clicked.
 
   return (
     <div className="nav-container">
-      {isMobile ? ( 
+      {isMobile ? (
         <>
           <div className="burger-menu" onClick={updateMenu}>
             <div className={burger_class}></div>
@@ -116,7 +123,7 @@ const Navbar: React.FC = () => {
           </div>
           <div className={menu_class}>{renderMobileNavLinks()}</div>
         </>
-      ) : ( 
+      ) : (
         <>
           <div className="desktop-links">{renderDesktopNavLinks()}</div>
         </>
