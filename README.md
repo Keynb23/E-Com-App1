@@ -1,3 +1,9 @@
+redo test. 2 unit and 1 integration test, then you pass 
+
+
+
+
+
 -------------------------------------------------E-commerce Application-----------------------------------------------------------------|
 This project is a modern e-commerce front-end. It's built with React, Redux Toolkit, React Router, Firebase, and React Query. 
 The app lets users browse products, manage a shopping cart, handle accounts, and (for admins) manage products.

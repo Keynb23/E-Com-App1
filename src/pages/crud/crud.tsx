@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import type { Product } from '../../types/types'; 
@@ -35,7 +35,7 @@ const CRUD: React.FC = () => {
   // This effect listens for changes in the user's authentication state (login/logout) and updates the `currentUser` state accordingly.
 
   // fetchProducts
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -54,13 +54,13 @@ const CRUD: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productsCollectionRef]);
   // This asynchronous function fetches all product documents from the 'products' collection in Firestore, updates the `products` state with the retrieved data, and manages loading and error states.
 
   // useEffect for initial product fetch
   useEffect(() => {
     fetchProducts();
-  }, []); 
+  }, [fetchProducts]); 
   // This effect calls `fetchProducts` once when the component mounts to load the initial list of products.
 
   // handleAddProduct
@@ -93,7 +93,8 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
-  // This function handles the submission of the "Add New Product" form. It validates the input, checks for user authentication, adds a new product document to Firestore, resets the form, and then refetches the product list.
+  // This function handles the submission of the "Add New Product" form. 
+  // It validates the input, checks for user authentication, adds a new product document to Firestore, resets the form, and then refetches the product list.
 
   // handleEditProduct
   const handleEditProduct = (product: Product) => {
@@ -138,7 +139,8 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
-  // This function handles the submission of the "Edit Product" form. It validates the input, checks for user authentication, updates the existing product document in Firestore, clears the editing state, and then refetches the product list.
+  // This function handles the submission of the "Edit Product" form. 
+  // It validates the input, checks for user authentication, updates the existing product document in Firestore, clears the editing state, and then refetches the product list.
 
   // handleDeleteProduct
   const handleDeleteProduct = async (productId: string) => {

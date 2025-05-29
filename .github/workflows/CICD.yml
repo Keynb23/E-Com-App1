@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       #Step 4: Run tests
-    #   - name: Run tests
-    #     run: npm test
+      - name: Run tests
+        run: npm test
       #Step 5: Build React app
       - name: Build React app
         run: npm run build

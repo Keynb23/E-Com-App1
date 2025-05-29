@@ -30,7 +30,8 @@ const productReducer = (
       throw new Error(`Unhandled action type`);
   }
 };
-// This is a reducer function that manages the state related to products within the application. It handles two types of actions: `SET_PRODUCTS` to update the list of available products and `SET_SELECTED_CATEGORY` to change the currently chosen product category.
+// This is a reducer function that manages the state related to products within the application. 
+// It handles two types of actions: `SET_PRODUCTS` to update the list of available products and `SET_SELECTED_CATEGORY` to change the currently chosen product category.
 
 interface ProductContextType {
   products: Product[];
@@ -58,7 +59,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     </ProductContext.Provider>
   );
 };
-// This component serves as a provider for the product context. It utilizes the `useReducer` hook to manage the `productReducer` and `initialState`, making the current product state and a `dispatch` function available to all components wrapped within it.
+// This component serves as a provider for the product context. 
+// It utilizes the `useReducer` hook to manage the `productReducer` and `initialState`, 
+// making the current product state and a `dispatch` function available to all components wrapped within it.
 
 // useProductContext
 export const useProductContext = (): ProductContextType => {
@@ -68,4 +71,5 @@ export const useProductContext = (): ProductContextType => {
   }
   return context;
 };
-// This custom hook allows functional components to easily access the `ProductContext`. It also includes a check to ensure that the hook is only called within a `ProductProvider`, preventing common usage errors.
+// This custom hook allows functional components to easily access the `ProductContext`. 
+// It also includes a check to ensure that the hook is only called within a `ProductProvider`, preventing common usage errors.

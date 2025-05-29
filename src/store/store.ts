@@ -20,7 +20,8 @@ const sessionStorageMiddleware: Middleware = store => next => action => {
   }
   return result;
 };
-// This middleware intercepts Redux actions. If an action's type starts with 'cart/', it saves the current state of the cart to session storage. This ensures that the cart's contents are preserved across browser sessions.
+// This middleware intercepts Redux actions. If an action's type starts with 'cart/', it saves the current state of the cart to session storage. 
+// This ensures that the cart's contents are preserved across browser sessions.
 
 // store
 export const store = configureStore({
