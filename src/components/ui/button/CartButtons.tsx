@@ -20,7 +20,12 @@ const AddToCart: React.FC<Props> = ({ product }) => {
 
   return (
     <div className="Add-to">
-      <button onClick={handleAddToCart}>Add to Cart</button>
+      <button
+        onClick={handleAddToCart}
+        data-testid={`add-to-cart-btn-${product.id}`} // ✅ test ID for reliable test targeting
+      >
+        Add to Cart
+      </button>
     </div>
   );
 };
