@@ -1,5 +1,6 @@
-redo test. 2 unit and 1 integration test, then you pass 
+STYLES NEED UPDATED:
 
+Shopping cart, Navbar, Filter, and Product cards all need touched up
 
 
 

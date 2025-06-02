@@ -61,7 +61,7 @@ const OrderHistory = () => {
 
   return (
     <div className="order-history">
-      <h2>Order History</h2>
+      <h2>Past Orders</h2>
       {orders && orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
