@@ -1,5 +1,7 @@
 .order-history {
-    overflow-y: auto;
+    overflow-y: hidden;
+    height: 550px;
+    width: 650px;
 }
 
 
@@ -22,7 +24,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 1rem;
-    background-color: #fafafa;
+    background-color: rgb(243, 242, 242);
     transition: box-shadow 0.3s ease;
 }
 
@@ -77,7 +79,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 1rem;
-  background-color: #fafafa;
+  background-color: rgb(243, 242, 242);
   transition: box-shadow 0.3s ease;
 }
 

@@ -129,7 +129,7 @@ const Profile: React.FC = () => {
             />
             <p>Email: {email}</p>
 
-            <button type="submit">Update Profile</button>
+            <button className="update-btn" type="submit">Update Profile</button>
 
             {success && <p className="success">{success}</p>}
             {error && <p className="error">{error}</p>}
