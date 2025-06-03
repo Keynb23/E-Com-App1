@@ -1,4 +1,4 @@
-STYLES NEED UPDATED:
+STYLES NEED UPDATED: test test
 
 Shopping cart, Navbar, Filter, and Product cards all need touched up
 
