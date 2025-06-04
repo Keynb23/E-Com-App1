@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'; // <--- IMPORTANT
 import '@testing-library/jest-dom';
 import Profile from './Profile';
 import { useAuth } from '../context/AuthContext';
 import { updateProfile, deleteUser } from 'firebase/auth';
 
-// Mock the OrderHistory component (match the import in Profile)
-jest.mock('./OrderHIstory', () => () => <div data-testid="order-history">Order History</div>);
+// Mock the OrderHistory component
+jest.mock('./OrderHistory', () => () => <div data-testid="order-history">Order History</div>);
 
 // Mock firebase/auth functions
 jest.mock('firebase/auth', () => ({
@@ -38,13 +39,17 @@ describe('Profile component', () => {
     mockNavigate.mockClear();
   });
 
-  it('renders order history by default', () => {
+  it('shows the user displayName and email in Profile section', async () => {
     render(<Profile />);
-    // Checks for the mocked OrderHistory component
-    expect(screen.getByTestId('order-history')).toBeInTheDocument();
-    // Checks for the section heading
-    expect(screen.getByRole('heading', { name: /order history/i })).toBeInTheDocument();
-    // Checks for the nav link (optional)
-    expect(screen.getByRole('link', { name: /order history/i })).toHaveClass('active');
+    const user = userEvent.setup();
+
+    // Simulate clicking the "Profile" nav link
+    const profileNavLink = screen.getByRole('link', { name: /profile/i });
+    await user.click(profileNavLink);
+
+    // The displayName should be the value of the input
+    expect(screen.getByDisplayValue('Test User')).toBeInTheDocument();
+    // The email should be in a paragraph
+    expect(screen.getByText(/email:/i)).toHaveTextContent('Email: test@example.com');
   });
 });
