@@ -1,54 +1,68 @@
 name: E-com-app1
+
 on:
   push:
     branches:
-      - main # Trigger the workflow on pushes to the main branch
+      - main
       - master
   pull_request:
     branches:
-      - main # Trigger on pull requests targeting the main branch
+      - main
       - master
+
 jobs:
-  build: #Continuous Integration
+  build:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
-      # Step 2: Setup Node.js
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22.15.1'
-      #Step 3: Install dependencies
+          node-version: '20' # Use LTS (or match your local version)
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
-      #Step 4: Run tests
+        run: npm ci
+
       - name: Run tests
-        run: npm test
-      #Step 5: Build React app
+        run: npm test -- --ci
+
       - name: Build React app
         run: npm run build
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build #Only run deploy after the build job has succeeded
+    needs: build
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
-      # Step 2: Setup Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.15.1'
-      #Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        uses: actions/checkout@v4
 
-      #Step 4 Deploy to Vercel (or another platform)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Deploy to Vercel
         run: |
           npm install -g vercel
-          # Vercel CLI automatically picks up VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID env vars
           vercel --prod --yes --token ${{ secrets.VT2 }}
