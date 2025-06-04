@@ -14,10 +14,11 @@ import Navbar from './components/Navbar/Navbar';
 import './App.css';
 import CRUD from './pages/crud/crud';
 
+{/* test */}
 
 function App() {
-  const client = new QueryClient();
 
+  const client = new QueryClient();
   return (
     <Provider store={store}>
       <QueryClientProvider client={client}>
