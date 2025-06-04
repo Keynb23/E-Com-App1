@@ -32,7 +32,7 @@ describe('ProductCard', () => {
     price: 9.99,
     rating: { rate: 4.5, count: 10 },
     category: 'Test Category',
- brand: 'Test Brand',
+    brand: 'Test Brand',
   };
 
   it('renders product title and price', () => {

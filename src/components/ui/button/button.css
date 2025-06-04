@@ -9,14 +9,16 @@
   transition: background-color 0.2s ease;
 }
 .quantity button {
-  padding: 4px 8px 10px 8px;
+  display: flex;
+  position: inherit;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
   font-weight: 600;
-  height: 22px;
+  height: 18px;
   width: 40px;
   border: none;
   border-radius: 8px;
-  margin: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }

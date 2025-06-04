@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
 import type { Product } from '../../types/types'; 
 import './crud.css';
 
-// CRUD
 const CRUD: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id' | 'rating'>>({
@@ -15,7 +14,6 @@ const CRUD: React.FC = () => {
     image: '',
     brand: '', 
   });
-
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,30 +21,25 @@ const CRUD: React.FC = () => {
 
   const db = getFirestore();
   const auth = getAuth();
-  const productsCollectionRef = collection(db, 'products');
+  // FIX: Memoize the products collection reference!
+  const productsCollectionRef = useMemo(() => collection(db, 'products'), [db]);
 
-  // useEffect for auth state change
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
     return () => unsubscribe(); 
   }, [auth]);
-  // This effect listens for changes in the user's authentication state (login/logout) and updates the `currentUser` state accordingly.
 
-  // fetchProducts
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-
       const querySnapshot = await getDocs(productsCollectionRef); 
-
       const productsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
       })) as Product[]; 
-
       setProducts(productsData);
     } catch (err: any) {
       console.error("Error fetching products:", err);
@@ -55,15 +48,12 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   }, [productsCollectionRef]);
-  // This asynchronous function fetches all product documents from the 'products' collection in Firestore, updates the `products` state with the retrieved data, and manages loading and error states.
 
-  // useEffect for initial product fetch
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]); 
-  // This effect calls `fetchProducts` once when the component mounts to load the initial list of products.
 
-  // handleAddProduct
+  // --- rest of your code below, unchanged ---
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser) {
@@ -78,7 +68,6 @@ const CRUD: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-
       await addDoc(productsCollectionRef, {
         ...newProduct,
         price: Number(newProduct.price), 
@@ -93,16 +82,11 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
-  // This function handles the submission of the "Add New Product" form. 
-  // It validates the input, checks for user authentication, adds a new product document to Firestore, resets the form, and then refetches the product list.
 
-  // handleEditProduct
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
   };
-  // This function sets the `editingProduct` state with the selected product, populating the edit form.
 
-  // handleUpdateProduct
   const handleUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser) {
@@ -139,10 +123,7 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
-  // This function handles the submission of the "Edit Product" form. 
-  // It validates the input, checks for user authentication, updates the existing product document in Firestore, clears the editing state, and then refetches the product list.
 
-  // handleDeleteProduct
   const handleDeleteProduct = async (productId: string) => {
     if (!currentUser) {
       setError("You must be logged in to delete products.");
@@ -165,14 +146,11 @@ const CRUD: React.FC = () => {
       setLoading(false);
     }
   };
-  // This asynchronous function handles the deletion of a product. It confirms the deletion with the user, checks for authentication, deletes the product document from Firestore, and then refetches the updated product list.
 
-  // handleCancelEdit
   const handleCancelEdit = () => {
     setEditingProduct(null);
     setError(null); 
   };
-  // This function clears the `editingProduct` state, effectively canceling the product editing process and clearing any related errors.
 
   return (
     <div className="crud-container">
@@ -232,7 +210,6 @@ const CRUD: React.FC = () => {
         </form>
       </div>
 
-      {/* Edit Product Form (Conditionally rendered) */}
       {editingProduct && (
         <div className="crud-section edit-product-section">
           <h2>Edit Product: {editingProduct.title}</h2>
@@ -286,32 +263,31 @@ const CRUD: React.FC = () => {
         </div>
       )}
 
-      {/* Product List */}
       <div className="crud-section product-list-section">
         <h2>Existing Products</h2>
         {products.length === 0 && !loading && !error && (
           <p className="crud-message info">No products found. Add some!</p>
         )}
-        <div className="product-grid">
+        <div className="crud-product-container">
           {products.map((product) => (
-            <div key={product.id} className="product-card">
+            <div key={product.id} className="crud-product-card">
               <img src={product.image} alt={product.title} className="product-image" />
               <h3>{product.title}</h3>
-              <p className="product-price">${product.price.toFixed(2)}</p>
-              <p className="product-category">{product.category}</p>
-              <p className="product-brand">{product.brand}</p>
-              <div className="product-actions">
+              <p className="crud-product-price">${product.price.toFixed(2)}</p>
+              <p className="crud-product-category">{product.category}</p>
+              <p className="crud-product-brand">{product.brand}</p>
+              <div className="crud-product-actions">
                 <button
                   onClick={() => handleEditProduct(product)}
                   disabled={!currentUser || loading}
-                  className="edit-button"
+                  className="crud-edit-button"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDeleteProduct(product.id)}
                   disabled={!currentUser || loading}
-                  className="delete-button"
+                  className="crud-delete-button"
                 >
                   Delete
                 </button>

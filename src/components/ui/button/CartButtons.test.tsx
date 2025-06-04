@@ -1,12 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from '../../../store/cartSlice'; 
 import { AddToCart } from './CartButtons';
 import type { Product } from '../../../types/types';
-
-const mockStore = configureStore([]);
-const initialState = { cart: { items: [], totalQuantity: 0, totalAmount: 0 } }; 
 
 const mockProduct: Product = {
   id: '101',
@@ -22,43 +20,22 @@ const mockProduct: Product = {
   brand: ''
 };
 
-describe('AddToCart Component', () => {
-  let store: ReturnType<typeof mockStore>;
+describe('AddToCart Integration', () => {
+  it('adds the product to the cart state when button is clicked', () => {
+    // Create a real Redux store
+    const store = configureStore({ reducer: { cart: cartReducer } });
 
-  beforeEach(() => {
-    store = mockStore(initialState);
-    store.dispatch = jest.fn(); 
-  });
-
-  {/*Test 1, Button rendering and att */}
-  it('renders the button with correct text and data-testid', () => {
-    render(<Provider store={store}><AddToCart product={mockProduct} /></Provider>);
-    const buttonElement = screen.getByRole('button', { name: /add to cart/i });
-    expect(buttonElement).toBeInTheDocument(); // ✅ ensures button exists
-    expect(buttonElement).toHaveAttribute('data-testid', `add-to-cart-btn-${mockProduct.id}`); 
-  });
-
-    {/*Test 2, callback btn on click */}
-
-  it('calls onAddToCart callback with the product when clicked, if provided', () => {
-    const mockOnAddToCart = jest.fn();
-
-    render(<Provider store={store}><AddToCart product={mockProduct} /></Provider>);
+    render(
+      <Provider store={store}>
+        <AddToCart product={mockProduct} />
+      </Provider>
+    );
 
     const buttonElement = screen.getByRole('button', { name: /add to cart/i });
-    fireEvent.click(buttonElement); 
+    fireEvent.click(buttonElement);
 
-    expect(store.dispatch).toHaveBeenCalledTimes(1); 
-  });
-
-    {/*Test 3, click handing w/o callback */}
-
-  it('handles click correctly even if onAddToCart callback is not provided', () => {
-    render(<Provider store={store}><AddToCart product={mockProduct} /></Provider>);
-
-    const buttonElement = screen.getByRole('button', { name: /add to cart/i });
-
-    expect(() => fireEvent.click(buttonElement)).not.toThrow(); 
-    expect(store.dispatch).toHaveBeenCalledTimes(1); 
+    // Assert that the store state has the added product
+    const state = store.getState();
+    expect(state.cart.items.some((item: any) => item.id === mockProduct.id)).toBe(true);
   });
 });

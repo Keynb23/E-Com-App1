@@ -1,6 +1,13 @@
-STYLES NEED UPDATED: test test
 
-Shopping cart, Navbar, Filter, and Product cards all need touched up
+
+when using the productfiler, the size changes depending on the layout of the page. I tried changing the positioning of it, but it's not working. Something else is interfeering with it probably.
+search bar crashes site. well the site goes white.
+
+
+
+
+
+
 
 
 
