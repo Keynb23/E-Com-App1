@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { updateProfile, deleteUser } from 'firebase/auth';
 
 // Mock the OrderHistory component
-jest.mock('./OrderHistory', () => () => <div data-testid="order-history">Order History</div>);
+jest.mock('./OrderHIstory', () => () => <div data-testid="order-history">Order History</div>);
 
 // Mock firebase/auth functions
 jest.mock('firebase/auth', () => ({
