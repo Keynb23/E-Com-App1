@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import ProductCard from './ProductCard';
 import type { Product } from '../../types/types';
 
-// ✅ Mock modules with inline component definitions
+//  Mock modules with inline component definitions
 jest.mock('@smastrom/react-rating', () => ({
   Rating: ({ value, style, readOnly }: any) => (
     <div
