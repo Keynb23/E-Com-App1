@@ -1,5 +1,4 @@
-import { render } from '@testing-library/react';
-import { screen } from '@testing-library/dom';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Profile from './Profile';
 import { useAuth } from '../context/AuthContext';
